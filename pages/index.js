@@ -7,25 +7,25 @@ export default function Home() {
   const [currentUrl, setCurrentUrl] = useState(null);
 
   useEffect(() => {
-    // Função para buscar a URL da guia atual
     const getCurrentTabUrl = () => {
       chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-        var currentTab = tabs[0];
-        var url = currentTab.url;
-
-        // Atualizar o estado com a URL recebida
+        const currentTab = tabs[0];
+        const url = currentTab.url;
         setCurrentUrl(url);
       });
     };
 
-    // Chamar a função ao montar o componente
-    getCurrentTabUrl();
-
-    // Lembre-se de remover o listener quando o componente for desmontado
+    try {
+      getCurrentTabUrl();
+    } catch (error) {
+      setCurrentUrl('http://localhost:3000');
+    }
+   
+    // Remover o listener quando o componente for desmontado
     return () => {
       chrome.runtime.onMessage.removeListener(handleMessage);
     };
-  }, []); // Executar este efeito apenas uma vez
+  }, []);
 
   const navigateToPage = (page) => {
     setActivePage(page);
