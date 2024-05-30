@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run prep",
+    "watch": "chokidar '**/*.js' --ignore 'node_modules/**' --ignore 'out/**' --ignore '.next/**' --initial -c 'npm run build'",
     "prep": "npm run exp && node out.js",
     "exp": "next build && next export",
     "run": "next start",
@@ -18,5 +19,8 @@
     "next": "^13.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "chokidar-cli": "^3.0.0"
   }
 }
