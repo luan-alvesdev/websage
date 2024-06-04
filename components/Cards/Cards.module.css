@@ -1,0 +1,10 @@
+.container {
+  width: 450px;
+  height: 485px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  background-color: rgb(207, 221, 221);
+}

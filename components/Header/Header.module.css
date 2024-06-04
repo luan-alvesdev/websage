@@ -1,7 +1,8 @@
 .head {
     display: flex;
     justify-content: center;
-    width: 400px;
+    width: 450px;
     font-size: medium;
-    color: #757bc3;
+    color: #d2d3e0;
+    font-family: 'Times New Roman', Times, serif;
 }

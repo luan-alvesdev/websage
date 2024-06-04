@@ -3,7 +3,7 @@ import styles from './Header.module.css';
 export default function Header() {
   return (
     <>
-      <p className={styles.head}>Organizer Blink</p>
+      <h1 className={styles.head}>WebSage</h1>
     </>
   );
 }

@@ -1,23 +1,15 @@
+import Button from '@mui/material/Button';
 import styles from './Footer.module.css';
+import SendIcon from '@mui/icons-material/Send';
+import React from "react";
 
-export default function Footer() {
+export default function Footer(props) {
+
   return (
-    <footer className={styles.footer}>
-      <a
-        href="https://github.com/ibnzUK/next-chrome-starter"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Blink V.0.0.1
-        <span className={styles.logo}>
-          <img
-            src="icons/icon16.png"
-            alt="Logo"
-            width={16}
-            height={16}
-          />
-        </span>
-      </a>
-    </footer>
+    <>
+      <footer className={styles.footer}>
+        <Button onClick={() => props.salvarCard(props.url)} variant="outlined" startIcon={<SendIcon />}>Analise a página</Button>
+      </footer>
+    </>
   );
 }
