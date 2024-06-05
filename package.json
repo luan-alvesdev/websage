@@ -18,12 +18,14 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.19",
+    "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.15.19",
     "axios": "^1.7.2",
     "glob": "^10.2.3",
     "next": "^13.4.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.23.1"
   },
   "devDependencies": {
     "chokidar-cli": "^3.0.0"

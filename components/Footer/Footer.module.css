@@ -1,7 +1,12 @@
 .footer {
-  width: 400px;
+  width: 450px;
   display: flex;
   justify-content: center;
   flex: 1;
-  height: 20px;
+  background: linear-gradient(to top, 
+  rgb(207, 221, 221),
+  transparent
+  );
+  /* background-color: rgb(207, 221, 221); */
+  padding: 15px 0;
 }

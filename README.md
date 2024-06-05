@@ -106,3 +106,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 ```
+
+
+Chave de acesso Unsplash:
+
+````
+
+https://api.unsplash.com/search/photos?query=${chave de busca}&orientation=landscape&per_page=1&client_id=Z98UiqP-pTJ3779KAb3UbnNhfy_qqXApYGozFZcYoXc
+
+
+````
