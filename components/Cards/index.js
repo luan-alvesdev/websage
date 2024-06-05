@@ -131,7 +131,7 @@ export default function Cards(props) {
                         {card.tag3 && <Chip label={card.tag3} />}
                       </Box>
 
-                      <IconButton style={{zIndex: 1}} aria-label="delete" size="small" color="error" onClick={() => deletarCard(card._id)}>
+                      <IconButton aria-label="delete" size="small" color="error" onClick={() => deletarCard(card._id)}>
                         <DeleteIcon fontSize="inherit" />
                       </IconButton>
                     </div>
@@ -142,7 +142,7 @@ export default function Cards(props) {
           </div >
         ))
         }
-      </div >
+      </div>
     </>
   );
 }
