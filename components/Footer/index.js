@@ -28,12 +28,6 @@ export default function Footer(props) {
           <span>Salvar</span>
         </LoadingButton>
       </footer>
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
     </>
   );
 }

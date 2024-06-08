@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "NEXT-CHROME-STARTER",
-  "short_name": "N-C-S",
-  "version": "0.0.1",
-  "description": "Next.js Chrome Extension Starter, Demo Example by ibnzUK. https://github.com/ibnzUK/next-chrome-starter",
+  "name": "WebSage Extension",
+  "short_name": "WS",
+  "version": "1.0.0",
+  "description": "Favoritador e de páginas",
   "permissions": [
     "tabs",
     "activeTab",
