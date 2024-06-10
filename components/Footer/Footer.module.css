@@ -3,10 +3,6 @@
   display: flex;
   justify-content: center;
   flex: 1;
-  background: linear-gradient(to top, 
-  rgb(207, 221, 221),
-  transparent
-  );
-  /* background-color: rgb(207, 221, 221); */
   padding: 15px 0;
+  background-color: #2a2c2c85
 }

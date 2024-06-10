@@ -1,32 +1,35 @@
-import styles from './Footer.module.css';
-import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import styles from "./Footer.module.css";
 import React from "react";
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
-import LoadingButton from '@mui/lab/LoadingButton';
-
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
+import Button from '@mui/material/Button';
 
 export default function Footer(props) {
-
   const [loading, setLoading] = React.useState(false);
-  
-  const statusBotao = (status) => { // Boolean
-    setLoading(status)
-  }
+
+  const statusBotao = (status) => {
+    // Boolean
+    setLoading(status);
+  };
 
   return (
     <>
       <footer className={styles.footer}>
-        <LoadingButton
-          size="small"
+        <Button
           onClick={() => props.salvarCard(props.url, statusBotao)}
-          endIcon={<LibraryAddIcon />}
           loading={loading}
           loadingPosition="end"
           variant="contained"
+          color="success"
         >
-          <span>Salvar</span>
-        </LoadingButton>
+          {!loading ? <span>Adicionar aos Favoritos</span> : <span>Processando...</span>}
+        </Button>
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </footer>
     </>
   );

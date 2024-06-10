@@ -16,7 +16,6 @@ export default function App() {
 
   return (
     <>
-      <Header />
       <Cards enviaFuncaoInicial={abrirComunicacao}/> {/*Passa a função para o filho "Cards", que deve executar ela quando for iniciado, o filho deve passar por parâmetro a função adicionarCard()*/}
       <Footer salvarCard={adicionarCard} url={url}/> {/*Recebe a função adicionarCard, recebida pelo pai, ao chamar a função enviaFuncaoInicial*/}
     </>
