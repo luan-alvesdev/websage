@@ -1,0 +1,11 @@
+.form { 
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+    padding: 10px;
+}
+
+.titulo {
+    text-align: center;
+}
