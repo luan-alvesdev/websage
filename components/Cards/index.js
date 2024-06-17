@@ -24,15 +24,33 @@ export default function Cards(props) {
   useEffect(() => {
     carregarCards();
 
-    try {
-      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        const currentTab = tabs[0];
-        const url = currentTab.url;
-        props.enviaFuncaoInicial(adicionarCard, url);
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    document.addEventListener("DOMContentLoaded", async function () {
+      try {
+        // Recuperar o HTML armazenado
+        chrome.storage.local.get(["extractedHTML"], function (result) {
+          if (result.extractedHTML) {
+            document.getElementById("pageHTML").textContent =
+              result.extractedHTML;
+          } else {
+            document.getElementById("pageHTML").textContent =
+              "Nenhum HTML extraído.";
+          }
+        });
+
+        // Recuperar a URL da aba ativa
+        chrome.tabs.query(
+          { active: true, currentWindow: true },
+          function (tabs) {
+            const currentTab = tabs[0];
+            const url = currentTab.url;
+            // Supondo que props.enviaFuncaoInicial esteja disponível no contexto do popup
+            props.enviaFuncaoInicial(adicionarCard, url);
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    });
   }, []);
 
   const buscarImagem = async (tag1, tag2, tag3) => {
@@ -53,22 +71,24 @@ export default function Cards(props) {
 
   const carregarCards = () => {
     // Carrega o Cache no navegador
-    const cache = getCachedData()
+    const cache = getCachedData();
     if (cache) {
       setTagsGerais(cache);
     }
 
     // Inicia busca por atualizacoes
     try {
-      axios.get(
-        "https://websage-api.abelcode.dev/api/list-items",
-        config
-      ).then(response => {
-        setTagsGerais(response.data);
+      axios
+        .get("https://websage-api.abelcode.dev/api/list-items", config)
+        .then((response) => {
+          setTagsGerais(response.data);
 
-        // Armazenar ou atualiza os dados no localStorage
-        localStorage.setItem("cards", JSON.stringify({ data: response.data }));
-      })
+          // Armazenar ou atualiza os dados no localStorage
+          localStorage.setItem(
+            "cards",
+            JSON.stringify({ data: response.data })
+          );
+        });
     } catch (err) {
       console.log(err);
     }
@@ -188,13 +208,15 @@ export default function Cards(props) {
 
   // Função para obter dados, seja do cache ou da API
   function getCachedData() {
-    const cachedItems = localStorage.getItem('cards');
+    const cachedItems = localStorage.getItem("cards");
     const parsedItems = JSON.parse(cachedItems);
     return parsedItems?.data;
   }
 
   return (
     <>
+      <h1>HTML da Página</h1>
+      <pre id="pageHTML"></pre>
       <div className={styles.container}>
         {tagsGerais.map((tags) =>
           tags?.ramos.map((card, index) => (
