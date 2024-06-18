@@ -7,7 +7,7 @@ import Login from '../components/Login';
 export default function App() {
   const [adicionarCard, setAdicionarCard] = useState();
   const [data, setData] = useState();
-  const [exibirLogin, setExibirLogin] = useState(false);
+  const [exibirLogin, setExibirLogin] = useState(true);
 
   const abrirComunicacao = (funcaoDeRetorno, data) => {
     setAdicionarCard(() => funcaoDeRetorno)
