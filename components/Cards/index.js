@@ -1,6 +1,5 @@
-import styles from "./Cards.module.css";
-import axios from "axios";
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -10,6 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import styles from "./Cards.module.css";
 
 const config = {
   headers: {
@@ -19,43 +19,41 @@ const config = {
 
 export default function Cards(props) {
   const [tagsGerais, setTagsGerais] = useState([]);
-  const [loadingData, setLoadingData] = React.useState(false);
+  const [loadingData, setLoadingData] = useState(false);
 
   useEffect(() => {
     carregarCards();
-
-    document.addEventListener("DOMContentLoaded", async function () {
-      try {
-        // Recuperar o HTML armazenado
-        chrome.storage.local.get(["extractedHTML"], function (result) {
-          if (result.extractedHTML) {
-            document.getElementById("pageHTML").textContent =
-              result.extractedHTML;
-          } else {
-            document.getElementById("pageHTML").textContent =
-              "Nenhum HTML extraído.";
-          }
-        });
-
-        // Recuperar a URL da aba ativa
-        chrome.tabs.query(
-          { active: true, currentWindow: true },
-          function (tabs) {
-            const currentTab = tabs[0];
-            const url = currentTab.url;
-            // Supondo que props.enviaFuncaoInicial esteja disponível no contexto do popup
-            props.enviaFuncaoInicial(adicionarCard, url);
-          }
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    });
+    atualizarHTML();
   }, []);
+
+  const atualizarHTML = () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const currentTab = tabs[0];
+      // Injetar o script de conteúdo na aba ativa
+      chrome.scripting.executeScript(
+        {
+          target: { tabId: currentTab.id },
+          files: ['content.js']
+        },
+        () => {
+          console.log('Script de conteúdo injetado');
+          // Recuperar o HTML armazenado após a injeção
+          chrome.storage.local.get(["extractedHTML"], function (result) {
+            if (result.extractedHTML) {
+              props.enviaFuncaoInicial(adicionarCard, {
+                url: currentTab.url,
+                html: result.extractedHTML
+              });
+            }
+          });
+        }
+      );
+    });
+  };
 
   const buscarImagem = async (tag1, tag2, tag3) => {
     try {
-      const queries = [tag1, tag2, tag3, "tecnologia"];
+      const queries = [tag1, tag2, tag3];
       for (const query of queries) {
         const response = await axios.get(
           `https://api.unsplash.com/search/photos?query=${query}&orientation=landscape&per_page=1&client_id=Z98UiqP-pTJ3779KAb3UbnNhfy_qqXApYGozFZcYoXc`
@@ -76,57 +74,42 @@ export default function Cards(props) {
       setTagsGerais(cache);
     }
 
-    // Inicia busca por atualizacoes
+    // Inicia busca por atualizações
     try {
-      axios
-        .get("https://websage-api.abelcode.dev/api/list-items", config)
+      axios.get("https://websage-api.abelcode.dev/api/list-items", config)
         .then((response) => {
           setTagsGerais(response.data);
-
           // Armazenar ou atualiza os dados no localStorage
-          localStorage.setItem(
-            "cards",
-            JSON.stringify({ data: response.data })
-          );
+          localStorage.setItem("cards", JSON.stringify({ data: response.data }));
         });
     } catch (err) {
       console.log(err);
     }
   };
 
-  const adicionarCard = (url, statusBotao) => {
+  const adicionarCard = (data, statusBotao) => {
     statusBotao(true);
 
-    axios
-      .post(`https://websage-api.abelcode.dev/api/save-item`, { url }, config)
+    axios.post(`https://websage-api.abelcode.dev/api/save-item`, data, config)
       .then(async (novoCard) => {
         const novoCardData = novoCard.data;
-
         try {
-          const imageUrl = await buscarImagem(
-            novoCardData.tag1,
-            novoCardData.tag2,
-            novoCardData.tag3
-          );
+          const imageUrl = await buscarImagem(novoCardData.tag1, novoCardData.tag2, novoCardData.tag3);
           adicionarNovoElemento(novoCardData, imageUrl);
           return { novoCardData, imageUrl };
         } catch (error) {
           console.log(error.message);
-          return {
-            novoCardData,
-            imageUrl:
-              "https://images.unsplash.com/photo-1557724630-96de91632c3b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2MTg2MTd8MHwxfHNlYXJjaHwxfHx1bmRlZmluZWR8ZW58MHwwfHx8MTcxNzg2MzEzMnww&ixlib=rb-4.0.3&q=80&w=1080",
-          };
         }
       })
       .then(({ novoCardData, imageUrl }) => {
-        return atualizaCard(novoCardData._id, imageUrl);
+        if (imageUrl)
+          return atualizaCard(novoCardData._id, imageUrl);
       })
       .catch((error) => {
         if (error.response && error.response.status === 409) {
           alert(error.response.data);
         } else {
-          alert("Erro ao extrair dados da página");
+          alert("Erro ao extrair dados da página: ", error);
           console.log(error.response.data.message);
         }
       })
@@ -138,10 +121,7 @@ export default function Cards(props) {
   const deletarCard = async (tag_raiz, id) => {
     setLoadingData(true);
     try {
-      await axios.delete(
-        `https://websage-api.abelcode.dev/api/delete-item/${id}`,
-        config
-      );
+      await axios.delete(`https://websage-api.abelcode.dev/api/delete-item/${id}`, config);
       removerElemento(tag_raiz, id);
     } catch (error) {
       alert("Item não foi apagado");
@@ -150,25 +130,18 @@ export default function Cards(props) {
   };
 
   const atualizaCard = async (ramo_id, imageUrl) => {
-    await axios
-      .put(
-        `https://websage-api.abelcode.dev/api/atualizar-item`,
-        { imageUrl, ramo_id },
-        config
-      )
+    await axios.put(`https://websage-api.abelcode.dev/api/atualizar-item`, { imageUrl, ramo_id }, config)
       .then(async (novoCard) => {
         await buscarImagem(novoCard.tag1, novoCard.tag2, novoCard.tag3);
       });
   };
 
-  // ** ------------------------------------ Operacoes em Array --------------------------------------
+  // ** ------------------------------------ Operações em Array --------------------------------------
   const adicionarNovoElemento = (novoElemento, imageUrl) => {
     novoElemento.imageUrl = imageUrl;
 
     // Verificar se há um elemento com a mesma tag_raiz
-    const elementoExistente = tagsGerais.find(
-      (item) => item.tag_raiz === novoElemento.tag_raiz
-    );
+    const elementoExistente = tagsGerais.find((item) => item.tag_raiz === novoElemento.tag_raiz);
 
     // Se não houver, criar um novo elemento
     if (!elementoExistente) {
@@ -215,8 +188,6 @@ export default function Cards(props) {
 
   return (
     <>
-      <h1>HTML da Página</h1>
-      <pre id="pageHTML"></pre>
       <div className={styles.container}>
         {tagsGerais.map((tags) =>
           tags?.ramos.map((card, index) => (

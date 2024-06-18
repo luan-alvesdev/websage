@@ -16,7 +16,7 @@ export default function Footer(props) {
     <>
       <footer className={styles.footer}>
         <Button
-          onClick={() => props.salvarCard(props.url, statusBotao)}
+          onClick={() => props.salvarCard(props.data, statusBotao)}
           loading={loading}
           loadingPosition="end"
           variant="contained"
