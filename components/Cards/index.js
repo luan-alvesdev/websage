@@ -76,7 +76,7 @@ export default function Cards(props) {
 
     // Inicia busca por atualizações
     try {
-      axios.get("https://websage-api.abelcode.dev/api/list-items", config)
+      axios.get("http://websage-api.abelcode.dev:8001/api/list-items", config)
         .then((response) => {
           setTagsGerais(response.data);
           // Armazenar ou atualiza os dados no localStorage
@@ -90,7 +90,7 @@ export default function Cards(props) {
   const adicionarCard = (data, statusBotao) => {
     statusBotao(true);
 
-    axios.post(`https://websage-api.abelcode.dev/api/save-item`, data, config)
+    axios.post(`http://websage-api.abelcode.dev:8001/api/save-item`, data, config)
       .then(async (novoCard) => {
         const novoCardData = novoCard.data;
         try {
@@ -121,7 +121,7 @@ export default function Cards(props) {
   const deletarCard = async (tag_raiz, id) => {
     setLoadingData(true);
     try {
-      await axios.delete(`https://websage-api.abelcode.dev/api/delete-item/${id}`, config);
+      await axios.delete(`http://websage-api.abelcode.dev:8001/api/delete-item/${id}`, config);
       removerElemento(tag_raiz, id);
     } catch (error) {
       alert("Item não foi apagado");
@@ -130,7 +130,7 @@ export default function Cards(props) {
   };
 
   const atualizaCard = async (ramo_id, imageUrl) => {
-    await axios.put(`https://websage-api.abelcode.dev/api/atualizar-item`, { imageUrl, ramo_id }, config)
+    await axios.put(`http://websage-api.abelcode.dev:8001/api/atualizar-item`, { imageUrl, ramo_id }, config)
       .then(async (novoCard) => {
         await buscarImagem(novoCard.tag1, novoCard.tag2, novoCard.tag3);
       });
