@@ -5,10 +5,12 @@ import Button from '@mui/material/Button';
 import { useValidation } from '../../hooks/useValidation';
 import { useState } from 'react';
 import axios from "axios";
+import { Alert, Snackbar } from "@mui/material";
 
 export default function Login(props) {
 
     const yupSchema = useValidation()
+    const [open, setOpen] = useState(false);
 
     const [formData, setFormData] = useState({
         email: '',
@@ -42,11 +44,10 @@ export default function Login(props) {
             })
             .catch((erro) => {
                 console.error(erro);
+                setOpen(true)
+                setTimeout(() => setOpen(false), 1200)
             });
     }
-
-    
-
 
     const submeterFormulario = async (event) => {
         event.preventDefault();
@@ -73,43 +74,57 @@ export default function Login(props) {
     };
 
     return (
-        <Box
-            className={styles.form}
-            component="form"
-            onSubmit={submeterFormulario}
-        >
-            <h1 className={styles.titulo}>Login</h1>
-            <TextField
-                value={formData.email}
-                onChange={handleChange}
-                error={erros.email}
-                name="email"
-                helperText={erros.email}
-                id="filled-required"
-                label="Email"
-                variant="filled"
-            />
-            <TextField
-                value={formData.password}
-                onChange={handleChange}
-                error={erros.password}
-                name="password"
-                helperText={erros.password}
-                id="filled-password-input"
-                label="Password"
-                type="password"
-                autoComplete="current-password"
-                variant="filled"
-            />
-            <Button
-                loadingPosition="end"
-                variant="contained"
-                color="primary"
-                size="large"
-                type="submit"
+        <>
+            <Box
+                className={styles.form}
+                component="form"
+                onSubmit={submeterFormulario}
             >
-                Login
-            </Button>
-        </Box>
+                <h1 className={styles.titulo}>Login</h1>
+                <TextField
+                    value={formData.email}
+                    onChange={handleChange}
+                    error={erros.email}
+                    name="email"
+                    helperText={erros.email}
+                    id="filled-required"
+                    label="Email"
+                    variant="filled"
+                />
+                <TextField
+                    value={formData.password}
+                    onChange={handleChange}
+                    error={erros.password}
+                    name="password"
+                    helperText={erros.password}
+                    id="filled-password-input"
+                    label="Password"
+                    type="password"
+                    autoComplete="current-password"
+                    variant="filled"
+                />
+                <Button
+                    loadingPosition="end"
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    type="submit"
+                >
+                    Login
+                </Button>
+            </Box>
+            <Snackbar open={open} autoHideDuration={6000} 
+            // onClose={handleClose}
+            >
+                <Alert
+                    // onClose={handleClose}
+                    severity="error"
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                >
+                    E-mail ou senha inválidos.
+                </Alert>
+            </Snackbar>
+        </>
     )
 }
