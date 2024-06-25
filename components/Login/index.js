@@ -2,22 +2,22 @@ import styles from './Login.module.css'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import * as yup from 'yup';
 import { useValidation } from '../../hooks/useValidation';
 import { useState } from 'react';
+import axios from "axios";
 
-export default function Login() {
+export default function Login(props) {
 
     const yupSchema = useValidation()
 
     const [formData, setFormData] = useState({
         email: '',
-        senha: ''
+        password: ''
     })
 
     const [erros, setErros] = useState({
         email: '',
-        senha: ''
+        password: ''
     })
 
     const [sucesso, setSucesso] = useState('')
@@ -31,20 +31,37 @@ export default function Login() {
         })
     }
 
-    const submeterFormulario = async (event) => {
-        event.preventDefault()
+    const fazerLogin = async (recebeSchema) => {
+        axios
+            .post(`https://api.websage.abelcode.dev/api/user/login`, recebeSchema)
+            .then(async (response) => {
+                const novoCardData = response.data;
+                const token = novoCardData.access_token
+                localStorage.setItem("tokenAutenticacao", token)
+                props.setExibirLogin(false)
+            })
+            .catch((erro) => {
+                console.error(erro);
+            });
+    }
 
-        setSucesso('')
+    
+
+
+    const submeterFormulario = async (event) => {
+        event.preventDefault();
+
+        setSucesso(''); //
         setErros({
             email: '',
-            senha: ''
-        })
+            password: ''
+        });
 
         try {
             const recebeSchema = await yupSchema.validate(formData, {
                 abortEarly: false
             })
-            console.log(recebeSchema)
+            fazerLogin(recebeSchema)
         } catch (validationErrors) {
             const newErrors = {};
             validationErrors.inner.forEach(err => {
@@ -53,7 +70,7 @@ export default function Login() {
             setErros(newErrors);
             console.error("Erros de validação: ", newErrors);
         }
-    }
+    };
 
     return (
         <Box
@@ -73,11 +90,11 @@ export default function Login() {
                 variant="filled"
             />
             <TextField
-                value={formData.senha}
+                value={formData.password}
                 onChange={handleChange}
-                error={erros.senha}
-                name="senha"
-                helperText={erros.senha}
+                error={erros.password}
+                name="password"
+                helperText={erros.password}
                 id="filled-password-input"
                 label="Password"
                 type="password"

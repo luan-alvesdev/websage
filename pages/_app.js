@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Cards from '../components/Cards';
 import Footer from '../components/Footer';
 import '../styles/globals.css';
@@ -9,6 +9,13 @@ export default function App() {
   const [data, setData] = useState();
   const [exibirLogin, setExibirLogin] = useState(true);
 
+  useEffect(() => {
+    const token = localStorage.getItem('tokenAutenticacao')
+    if (token) {
+      setExibirLogin(false)
+    }
+  }, []);
+
   const abrirComunicacao = (funcaoDeRetorno, data) => {
     setAdicionarCard(() => funcaoDeRetorno)
     setData(data)
@@ -16,8 +23,8 @@ export default function App() {
 
   return (
     <>
-      { exibirLogin && <Login/>} 
-      { !exibirLogin && <Cards enviaFuncaoInicial={abrirComunicacao}/>} 
+      { exibirLogin && <Login setExibirLogin={setExibirLogin}/>} 
+      { !exibirLogin && <Cards enviaFuncaoInicial={abrirComunicacao} setExibirLogin={setExibirLogin}/>} 
       { !exibirLogin && <Footer salvarCard={adicionarCard} data={data}/>}
     </>
   );
