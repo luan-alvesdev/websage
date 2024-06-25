@@ -11,15 +11,14 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import styles from "./Cards.module.css";
 
-const config = {
-  headers: {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxODIyMDg3NCwianRpIjoiNDRjZjk2YWEtOTVjZi00MmNlLWIwM2MtY2M4MTI1MDVlOGZkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjY2NjBmODg3ZjhmYTcxMWJjOTYxZDY1YiIsIm5iZiI6MTcxODIyMDg3NCwiY3NyZiI6IjRhM2M5NjRjLTg5OWUtNDA0Zi04YWI0LWQ1NzA5YzhiZDdhYSIsImV4cCI6MTcyMDgxMjg3NH0.LOfwtn26ig80BXo1rXP4ZNj8gFAOTQh-AVmrYUskmb4`,
-  },
-};
-
 export default function Cards(props) {
   const [tagsGerais, setTagsGerais] = useState([]);
   const [loadingData, setLoadingData] = useState(false);
+  const config = {
+    headers: {
+      Authorization: 'Bearer ' + localStorage.getItem('tokenAutenticacao')
+    },
+  };
 
   useEffect(() => {
     carregarCards();
@@ -27,28 +26,33 @@ export default function Cards(props) {
   }, []);
 
   const atualizarHTML = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      const currentTab = tabs[0];
-      // Injetar o script de conteúdo na aba ativa
-      chrome.scripting.executeScript(
-        {
-          target: { tabId: currentTab.id },
-          files: ['content.js']
-        },
-        () => {
-          console.log('Script de conteúdo injetado');
-          // Recuperar o HTML armazenado após a injeção
-          chrome.storage.local.get(["extractedHTML"], function (result) {
-            if (result.extractedHTML) {
-              props.enviaFuncaoInicial(adicionarCard, {
-                url: currentTab.url,
-                html: result.extractedHTML
-              });
-            }
-          });
-        }
-      );
-    });
+    try {
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        const currentTab = tabs[0];
+        // Injetar o script de conteúdo na aba ativa
+        chrome.scripting.executeScript(
+          {
+            target: { tabId: currentTab.id },
+            files: ['content.js']
+          },
+          () => {
+            console.log('Script de conteúdo injetado');
+            // Recuperar o HTML armazenado após a injeção
+            chrome.storage.local.get(["extractedHTML"], function (result) {
+              if (result.extractedHTML) {
+                props.enviaFuncaoInicial(adicionarCard, {
+                  url: currentTab.url,
+                  html: result.extractedHTML
+                });
+              }
+            });
+          }
+        );
+      });
+    } catch (error) {
+      console.log(error)
+    }
+
   };
 
   const buscarImagem = async (tag1, tag2, tag3) => {
@@ -76,7 +80,7 @@ export default function Cards(props) {
 
     // Inicia busca por atualizações
     try {
-      axios.get("http://websage-api.abelcode.dev:8001/api/list-items", config)
+      axios.get("https://api.websage.abelcode.dev/api/list-items", config)
         .then((response) => {
           setTagsGerais(response.data);
           // Armazenar ou atualiza os dados no localStorage
@@ -90,7 +94,7 @@ export default function Cards(props) {
   const adicionarCard = (data, statusBotao) => {
     statusBotao(true);
 
-    axios.post(`http://websage-api.abelcode.dev:8001/api/save-item`, data, config)
+    axios.post(`https://api.websage.abelcode.dev/api/save-item`, data, config)
       .then(async (novoCard) => {
         const novoCardData = novoCard.data;
         try {
@@ -121,7 +125,7 @@ export default function Cards(props) {
   const deletarCard = async (tag_raiz, id) => {
     setLoadingData(true);
     try {
-      await axios.delete(`http://websage-api.abelcode.dev:8001/api/delete-item/${id}`, config);
+      await axios.delete(`https://api.websage.abelcode.dev/api/delete-item/${id}`, config);
       removerElemento(tag_raiz, id);
     } catch (error) {
       alert("Item não foi apagado");
@@ -130,7 +134,7 @@ export default function Cards(props) {
   };
 
   const atualizaCard = async (ramo_id, imageUrl) => {
-    await axios.put(`http://websage-api.abelcode.dev:8001/api/atualizar-item`, { imageUrl, ramo_id }, config)
+    await axios.put(`https://api.websage.abelcode.dev/api/atualizar-item`, { imageUrl, ramo_id }, config)
       .then(async (novoCard) => {
         await buscarImagem(novoCard.tag1, novoCard.tag2, novoCard.tag3);
       });
@@ -186,8 +190,20 @@ export default function Cards(props) {
     return parsedItems?.data;
   }
 
+  const logOff = () => {
+    localStorage.removeItem("tokenAutenticacao");
+    props.setExibirLogin(true)
+  }
+
   return (
     <>
+      <IconButton
+        aria-label="Log Off"
+        size="large"
+        color="error"
+        onClick={() => logOff()}
+      >
+      </IconButton>
       <div className={styles.container}>
         {tagsGerais.map((tags) =>
           tags?.ramos.map((card, index) => (
