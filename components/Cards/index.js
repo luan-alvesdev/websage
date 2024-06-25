@@ -11,15 +11,14 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import styles from "./Cards.module.css";
 
-const config = {
-  headers: {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxODIyMDg3NCwianRpIjoiNDRjZjk2YWEtOTVjZi00MmNlLWIwM2MtY2M4MTI1MDVlOGZkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjY2NjBmODg3ZjhmYTcxMWJjOTYxZDY1YiIsIm5iZiI6MTcxODIyMDg3NCwiY3NyZiI6IjRhM2M5NjRjLTg5OWUtNDA0Zi04YWI0LWQ1NzA5YzhiZDdhYSIsImV4cCI6MTcyMDgxMjg3NH0.LOfwtn26ig80BXo1rXP4ZNj8gFAOTQh-AVmrYUskmb4`,
-  },
-};
-
 export default function Cards(props) {
   const [tagsGerais, setTagsGerais] = useState([]);
   const [loadingData, setLoadingData] = useState(false);
+  const config = {
+    headers: {
+      Authorization: 'Bearer ' + localStorage.getItem('tokenAutenticacao')
+    },
+  };
 
   useEffect(() => {
     carregarCards();
