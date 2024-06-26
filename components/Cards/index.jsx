@@ -17,36 +17,28 @@ export default function Cards(props) {
   useEffect(() => {
     carregarCards();
     atualizarHTML();
+
+    // Adicionar listener para atualizações no armazenamento local
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+      if (changes.extractedHTML || changes.activeTabUrl) {
+        atualizarHTML();
+      }
+    });
   }, []);
 
   const atualizarHTML = () => {
     try {
-      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        const currentTab = tabs[0];
-        // Injetar o script de conteúdo na aba ativa
-        chrome.scripting.executeScript(
-          {
-            target: { tabId: currentTab.id },
-            files: ['content.js']
-          },
-          () => {
-            console.log('Script de conteúdo injetado');
-            // Recuperar o HTML armazenado após a injeção
-            chrome.storage.local.get(["extractedHTML"], function (result) {
-              if (result.extractedHTML) {
-                props.enviaFuncaoInicial(adicionarCard, {
-                  url: currentTab.url,
-                  html: result.extractedHTML
-                });
-              }
-            });
-          }
-        );
+      chrome.storage.local.get(["activeTabUrl", "extractedHTML"], function (result) {
+        if (result.extractedHTML && result.activeTabUrl) {
+          props.enviaFuncaoInicial(adicionarCard, {
+            url: result.activeTabUrl,
+            html: result.extractedHTML
+          });
+        }
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
   };
 
   const buscarImagem = async (tag1, tag2, tag3) => {

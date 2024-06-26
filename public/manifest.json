@@ -8,7 +8,8 @@
     "tabs",
     "activeTab",
     "storage",
-    "scripting"
+    "scripting",
+    "sidePanel"
   ],
   "web_accessible_resources": [
     {
@@ -23,10 +24,10 @@
     }
   ],
   "host_permissions": ["<all_urls>"],
-  "action": {
-    "default_popup": "index.html"
-  },
   "background": {
     "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "index.html"
   }
 }
