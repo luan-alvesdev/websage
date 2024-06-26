@@ -20,9 +20,10 @@ export default function Footer(props) {
           loading={loading}
           loadingPosition="end"
           variant="contained"
-          color="success"
+          color="primary"
+          size="small"
         >
-          {!loading ? <span>Adicionar aos Favoritos</span> : <span>Processando...</span>}
+          {!loading ? <span>Adicionar</span> : <span>Processando...</span>}
         </Button>
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}

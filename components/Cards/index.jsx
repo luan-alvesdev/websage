@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import Chip from "@mui/material/Chip";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
+import Card from '../Card/index'
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import styles from "./Cards.module.css";
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import { Tooltip } from "@mui/material";
 
 export default function Cards(props) {
   const [tagsGerais, setTagsGerais] = useState([]);
@@ -197,96 +193,36 @@ export default function Cards(props) {
 
   return (
     <>
-      <IconButton
-        aria-label="Log Off"
-        size="large"
-        color="error"
-        onClick={() => logOff()}
-      >
-      </IconButton>
       <div className={styles.container}>
-        {tagsGerais.map((tags) =>
-          tags?.ramos.map((card, index) => (
-            <div key={card._id} className={styles.card}>
-              <div
-                style={{
-                  backgroundImage: `url(${card.imageUrl})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  margin: "10px",
-                  borderRadius: "4.5px",
-                }}
-              >
-                <Card
-                  className={styles.cardContainer}
-                  sx={{ display: "flex", backgroundColor: "#ffffffd9" }}
-                >
-                  <Box sx={{ display: "flex", flexDirection: "column" }}>
-                    <a
-                      href={card.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <CardContent sx={{ flex: "1 0 auto" }}>
-                        <Typography
-                          component="div"
-                          variant="h6"
-                          sx={{ paddingBottom: "10px", fontWeight: "500" }}
-                        >
-                          {card.titulo}
-                        </Typography>
-                        <Typography
-                          variant="subtitle2"
-                          color="text.secondary"
-                          component="div"
-                        >
-                          {card.descricao}
-                        </Typography>
-                      </CardContent>
-                    </a>
-                    <div className={styles.tags}>
-                      <a
-                        href={card.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            pl: 1,
-                            pb: 1,
-                            gap: "10px",
-                          }}
-                        >
-                          {card.tag1 && <Chip label={card.tag1} />}
-                          {card.tag2 && <Chip label={card.tag2} />}
-                          {card.tag3 && <Chip label={card.tag3} />}
-                        </Box>
-                      </a>
-                      <IconButton
-                        z-index="1"
-                        aria-label="delete"
-                        size="small"
-                        color="error"
-                        onClick={() => deletarCard(tags.tag_raiz, card._id)}
-                      >
-                        <DeleteIcon fontSize="inherit" />
-                      </IconButton>
-                    </div>
-                  </Box>
-                </Card>
-              </div>
-            </div>
-          ))
-        )}
+        <div className={styles.logout}>
+          <Tooltip title="Sair">
+            <LogoutOutlinedIcon
+              aria-label="Log Off"
+              size="large"
+              onClick={() => logOff()}
+            >
+            </LogoutOutlinedIcon>
+          </Tooltip>
+        </div>
+        <section>
+          {tagsGerais.map((tags) =>
+            tags?.ramos.map((card) => (
+              <Card tags={tags}
+                    card={card}
+                    deletarCard={deletarCard}
+              />
+            ))
+          )}
+        </section>
       </div>
+
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loadingData}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+
     </>
   );
 }
