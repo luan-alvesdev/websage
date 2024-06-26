@@ -4,8 +4,15 @@
     flex-direction: column;
     row-gap: 1.5rem;
     padding: 10px;
+    color: white;
+    background-color: #46464a;
+    cursor: default;
 }
 
 .titulo {
     text-align: center;
+}
+
+.campoTexto {
+    background-color: aliceblue;
 }

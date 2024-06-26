@@ -4,8 +4,6 @@ import Card from '../Card/index'
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import styles from "./Cards.module.css";
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import { Tooltip } from "@mui/material";
 
 export default function Cards(props) {
   const [tagsGerais, setTagsGerais] = useState([]);
@@ -186,24 +184,9 @@ export default function Cards(props) {
     return parsedItems?.data;
   }
 
-  const logOff = () => {
-    localStorage.removeItem("tokenAutenticacao");
-    props.setExibirLogin(true)
-  }
-
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.logout}>
-          <Tooltip title="Sair">
-            <LogoutOutlinedIcon
-              aria-label="Log Off"
-              size="large"
-              onClick={() => logOff()}
-            >
-            </LogoutOutlinedIcon>
-          </Tooltip>
-        </div>
         <section>
           {tagsGerais.map((tags) =>
             tags?.ramos.map((card) => (

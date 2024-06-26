@@ -1,7 +1,22 @@
 .head {
-    display: flex;
-    justify-content: center;
     width: 450px;
-    font-size: medium;
-    color: #d2d3e0;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    font-size: 1rem;
+    padding: 0 15px;
+    height: 35px;
+    color: white;
+    background-color: #46464a;
 }
+
+.titulo {
+    font-size: 1rem;
+    cursor: default;
+}
+
+.logout {
+    display: flex;
+    justify-content: flex-end;
+    cursor: pointer;
+  }

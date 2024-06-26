@@ -80,8 +80,9 @@ export default function Login(props) {
                 component="form"
                 onSubmit={submeterFormulario}
             >
-                <h1 className={styles.titulo}>Login</h1>
+                <h1 className={styles.titulo}>WebSage</h1>
                 <TextField
+                    className={styles.campoTexto}
                     value={formData.email}
                     onChange={handleChange}
                     error={erros.email}
@@ -92,6 +93,7 @@ export default function Login(props) {
                     variant="filled"
                 />
                 <TextField
+                    className={styles.campoTexto}
                     value={formData.password}
                     onChange={handleChange}
                     error={erros.password}

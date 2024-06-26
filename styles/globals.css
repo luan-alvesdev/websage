@@ -17,3 +17,39 @@ a {
 * {
   box-sizing: border-box;
 }
+
+::-webkit-scrollbar {
+  width: 12px; /* Largura da barra de rolagem vertical */
+  height: 12px; /* Altura da barra de rolagem horizontal */
+}
+
+::-webkit-scrollbar-track {
+  background: #46464a; /* Cor de fundo da barra de rolagem */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #f9f9fa; /* Cor do thumb da barra de rolagem */
+  border-radius: 6px; /* Borda arredondada do thumb */
+  border: 2px solid #46464a; /* Cor da borda ao redor do thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #e0e0e0; /* Cor do thumb quando hover */
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: #c0c0c0; /* Cor do thumb quando ativo (clicado) */
+}
+
+/* Estilizando as setas da barra de rolagem para navegadores Webkit (Chrome, Safari) */
+::-webkit-scrollbar-button {
+  background-color: #46464a;
+  height: 12px;
+  width: 12px;
+}
+
+/* Estilizando a barra de rolagem para Firefox */
+* {
+  scrollbar-width: thin; /* Largura fina da barra de rolagem */
+  scrollbar-color: #f9f9fa #46464a; /* thumb e track colors */
+}

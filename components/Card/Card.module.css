@@ -3,7 +3,7 @@
     height: 485px;
     overflow-y: auto;
     overflow-x: hidden;
-    background-color: #2a2c2c85
+    background-color: #2a2c2c85;
   }
   
   .tags {
@@ -15,9 +15,3 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   }
   
-  .logout {
-    display: flex;
-    justify-content: flex-end;
-    padding-right: 10px;
-    padding-top: 0.4rem;
-  }
