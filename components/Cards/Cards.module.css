@@ -3,9 +3,6 @@
   height: 485px;
   overflow-y: auto;
   overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
   background-color: #2a2c2c85
 }
 
@@ -14,6 +11,13 @@
   justify-content: space-between;
 }
 
-.cardContainer:hover {
+.card:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.logout {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 10px;
+  padding-top: 0.4rem;
 }
