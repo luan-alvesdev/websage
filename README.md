@@ -69,6 +69,8 @@ Após isso, uma pasta chamada "out" será gerada na raiz do projeto, contendo to
 
 Pronto! A extensão foi adicionada ao seu navegador e está pronta para uso.
 
+[Clique aqui para ler os termos de privacidade](https://luan-alvesdev.github.io/websage/).
+
 ## Authors
 
 - [@abel-cabral](https://www.github.com/abel-cabral)
