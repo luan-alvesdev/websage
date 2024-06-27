@@ -9,15 +9,15 @@ WebSage
 
 [Demonstração]()
 
-##Descrição
+## Descrição
 
 Web Sage é uma extensão do Chrome que permite adicionar páginas da web a uma lista de cartões personalizados. Cada cartão representa uma página adicionada, funcionando como uma lista de favoritos do navegador, mas com funcionalidades aprimoradas.
 
 Ao adicionar uma página, um cartão é criado com um resumo da página, um título e tags relacionadas ao conteúdo principal. Isso permite que os usuários organizem e acessem suas páginas favoritas de maneira mais eficiente, clicando no link do cartão para abrir a página correspondente..
 
-$Instalação
+# Instalação
 
-##Método 1: Desenvolvimento com npm run dev
+## Método 1: Desenvolvimento com npm run dev
 
 Este método permite que você visualize e teste a extensão em tempo real, facilitando ajustes visuais e análise de console.
 
@@ -41,7 +41,7 @@ Benefícios:
 - Debugging Facilitado: Acesse o console do navegador para depurar e analisar o comportamento da extensão.
 - Ajustes Visuais: Faça ajustes em CSS e veja as mudanças imediatamente.
 
-##Método 2: Produção com npm run build
+## Método 2: Produção com npm run build
 
 Instale as dependências:
 
