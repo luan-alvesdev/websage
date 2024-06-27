@@ -1,13 +1,4 @@
-WebSage
-
-## Authors
-
-- [@abel-cabral](https://www.github.com/abel-cabral)
-- [@luan-alves](https://github.com/luan-alvesdev)
-
-## Demonstração
-
-[Demonstração]()
+# WebSage
 
 ## Descrição
 
@@ -15,54 +6,62 @@ Web Sage é uma extensão do Chrome que permite adicionar páginas da web a uma 
 
 Ao adicionar uma página, um cartão é criado com um resumo da página, um título e tags relacionadas ao conteúdo principal. Isso permite que os usuários organizem e acessem suas páginas favoritas de maneira mais eficiente, clicando no link do cartão para abrir a página correspondente. A versão atual da extensão funciona somente em português. 
 
-# Instalação
+## Executando o WebSage localmente
 
-## Método 1: Desenvolvimento com npm run dev
-
-Este método permite que você visualize e teste a extensão em tempo real, facilitando ajustes visuais e análise de console.
+### Rodando em modo desenvolvedor:
+Certifique-se de ter o node.js instalado na versão 20 ou superiores. 
 
 Instale as dependências:
-
 ```
 npm install 
 ```
 
 Inicie o modo de desenvolvimento:
-
 ```
 npm run dev
 ```
 
-Acesse a aplicação com o link: http://localhost:3000/
+Acesse localhost na porta 3000: http://localhost:3000
 
-Benefícios:
+Com o método de desenvolvimento usando npm run dev, é possível ver os estilos e o layout da extensão em tempo real enquanto trabalha. Além disso, é fácil depurar, já que temos acesso ao console do navegador para analisar o comportamento da extensão. Podemos também fazer ajustes visuais em CSS e ver as mudanças imediatamente.
 
-- Visualização em Tempo Real: Veja os estilos e layout da extensão enquanto trabalha.
-- Debugging Facilitado: Acesse o console do navegador para depurar e analisar o comportamento da extensão.
-- Ajustes Visuais: Faça ajustes em CSS e veja as mudanças imediatamente.
-
-## Método 2: Produção com npm run build
-
-Instale as dependências:
-
-```
-npm install 
-```
-
-Compile o projeto:
-
+### Realizando build: 
+Execute o seguite comando no terminal:
 ```
 npm run build
 ```
 
-Adicione a extensão ao Chrome:
+Após isso, uma pasta chamada "out" será gerada na raiz do projeto, contendo todos os arquivos necessários da extensão. 
 
-- Abra o Chrome e vá para chrome://extensions/.
-- Ative o "Modo do desenvolvedor".
-- Clique em "Carregar sem compactação" e selecione o diretório build gerado.
+### Adicionando extensão a navegadores baseados em Chrome:
+1. Abrir o Navegador:
+    - Abra o navegador baseado em Chrome onde você deseja adicionar a extensão (Chrome, Edge, Chromium, Brave, etc.).
 
-Benefícios:
 
-- Uso Completo da Extensão: Utilize todas as funcionalidades da extensão como planejado.
-- Simulação Realista: Teste a extensão em um ambiente que simula o uso real pelos usuários finais.
+2. Acessar a Página de Extensões:
+    - Clique no ícone de três pontos verticais no canto superior direito do navegador.
+    - Navegue até "Mais Ferramentas" e depois selecione "Extensões".
+    - Alternativamente, você pode digitar chrome://extensions/ na barra de endereços e pressionar Enter.
+
+
+3. Ativar o Modo Desenvolvedor:
+    - No canto superior direito da página de Extensões, ative o "Modo Desenvolvedor" clicando no interruptor.
+
+
+4. Adicionar a Extensão:
+    - Clique no botão "Carregar sem compactação" ou "Load unpacked".
+    - Navegue até a pasta onde a extensão está armazenada no seu computador.
+    - Selecione a pasta da extensão e clique em "Selecionar Pasta" ou "Select Folder".
+
+
+5. Confirmar a Instalação:
+    - A extensão deve agora aparecer na lista de extensões do navegador.
+    - Certifique-se de que a extensão está ativada (interruptor deve estar ligado).
+
+Pronto! A extensão foi adicionada ao seu navegador e está pronta para uso.
+
+## Authors
+
+- [@abel-cabral](https://www.github.com/abel-cabral)
+- [@luan-alves](https://github.com/luan-alvesdev)
 
