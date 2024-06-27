@@ -1,6 +1,8 @@
 (function() {
   const htmlText = document.body.innerText;
-  chrome.runtime.sendMessage({ htmlText: htmlText }, (response) => {
+  const url = window.location.href;
+
+  chrome.runtime.sendMessage({ htmlText: htmlText, url: url }, (response) => {
     console.log(response.status);
   });
 })();

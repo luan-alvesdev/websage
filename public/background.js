@@ -1,17 +1,4 @@
-chrome.tabs.onActivated.addListener((activeInfo) => {
-  // Quando uma aba é ativada, injetar o script de conteúdo na aba ativa
-  chrome.tabs.get(activeInfo.tabId, (tab) => {
-    injectContentScript(tab.id);
-  });
-});
-
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === 'complete') {
-    // Quando uma aba é atualizada, injetar o script de conteúdo
-    injectContentScript(tabId);
-  }
-});
-
+// Injeta o script de conteúdo na aba ativa
 function injectContentScript(tabId) {
   chrome.scripting.executeScript(
     {
@@ -24,13 +11,39 @@ function injectContentScript(tabId) {
   );
 }
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.htmlText) {
-    console.log('HTML extraído da página:', request.htmlText);
-    // Armazenar o HTML extraído em armazenamento local
-    chrome.storage.local.set({ extractedHTML: request.htmlText }, () => {
-      console.log('HTML armazenado');
-    });
-    sendResponse({ status: 'HTML recebido com sucesso' });
+// Escuta mudanças na aba ativa
+chrome.tabs.onActivated.addListener((activeInfo) => {
+  chrome.tabs.get(activeInfo.tabId, (tab) => {
+    injectContentScript(tab.id);
+  });
+});
+
+// Escuta atualizações na aba
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === 'complete') {
+    injectContentScript(tabId);
   }
+});
+
+// Escuta mensagens do script de conteúdo
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.htmlText && request.url) {
+    console.log('HTML extraído da página:', request.htmlText);
+    console.log('URL da aba ativa:', request.url);
+
+    // Armazena o HTML extraído e a URL da aba ativa
+    chrome.storage.local.set({
+      extractedHTML: request.htmlText,
+      activeTabUrl: request.url
+    }, () => {
+      console.log('HTML e URL armazenados');
+    });
+
+    sendResponse({ status: 'Dados recebidos com sucesso' });
+  }
+});
+
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.sidePanel.setOptions({ path: 'index.html' }).catch((error) => console.error(error));
+  chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch((error) => console.error(error));
 });
