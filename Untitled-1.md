@@ -1,1 +1,0 @@
-GET https://api.unsplash.com/search/photos?query=games,ps5&client_id=Z98UiqP-pTJ3779KAb3UbnNhfy_qqXApYGozFZcYoXc
