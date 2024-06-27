@@ -1,12 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "WebSage Extension",
+  "name": "WebSage",
   "short_name": "WS",
-  "version": "1.0.0",
-  "description": "Favoritador e de páginas",
+  "version": "1.0.1",
+  "description": "Uma extensão para google chrome que gerencia, cataloga e salva seus favoritos de forma prática e detalhada.",
   "permissions": [
     "tabs",
-    "activeTab",
     "storage",
     "scripting",
     "sidePanel"
