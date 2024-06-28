@@ -1,5 +1,5 @@
 .container {
-    width: 450px;
+    width: auto;
     height: 485px;
     overflow-y: auto;
     overflow-x: hidden;

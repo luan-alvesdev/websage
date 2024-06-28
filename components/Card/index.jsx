@@ -39,7 +39,7 @@ export default function Card(props) {
                                     >
                                         {props.card.titulo}
                                     </Typography>
-                                    <Typography
+                                    <Typography style={{width: '20rem'}}
                                         variant="subtitle2"
                                         color="text.secondary"
                                         component="div"
