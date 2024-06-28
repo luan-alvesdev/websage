@@ -12,7 +12,7 @@ export default function Header(props) {
   return (
     <>
       <div className={styles.head}>
-        <h1 className={styles.titulo}>WebSage</h1>
+        <h1 className={styles.titulo}></h1>
         <div className={styles.logout}>
           <Tooltip title="Sair">
             <LogoutOutlinedIcon
