@@ -35,7 +35,7 @@ export default function Login(props) {
 
     const fazerLogin = async (recebeSchema) => {
         axios
-            .post(`https://api.websage.abelcode.dev/api/user/login`, recebeSchema)
+            .post(`https://websage-api.abelcode.dev/api/user/login`, recebeSchema)
             .then(async (response) => {
                 const novoCardData = response.data;
                 const token = novoCardData.access_token

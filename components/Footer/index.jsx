@@ -12,6 +12,8 @@ export default function Footer(props) {
     setLoading(status);
   };
 
+  
+
   return (
     <>
       <footer className={styles.footer}>
