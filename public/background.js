@@ -11,20 +11,6 @@ function injectContentScript(tabId) {
   );
 }
 
-// Escuta mudanças na aba ativa
-chrome.tabs.onActivated.addListener((activeInfo) => {
-  chrome.tabs.get(activeInfo.tabId, (tab) => {
-    injectContentScript(tab.id);
-  });
-});
-
-// Escuta atualizações na aba
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === 'complete') {
-    injectContentScript(tabId);
-  }
-});
-
 // Escuta mensagens do script de conteúdo
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.htmlText && request.url) {
