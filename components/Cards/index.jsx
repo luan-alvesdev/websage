@@ -19,11 +19,16 @@ export default function Cards(props) {
     atualizarHTML();
 
     // Adicionar listener para atualizações no armazenamento local
-    chrome.storage.onChanged.addListener((changes, namespace) => {
-      if (changes.extractedHTML || changes.activeTabUrl) {
-        atualizarHTML();
-      }
-    });
+    try {
+      chrome.storage.onChanged.addListener((changes, namespace) => {
+        if (changes.extractedHTML || changes.activeTabUrl) {
+          atualizarHTML();
+        }
+      });
+    } catch (error) {
+      console.log(error)
+    }
+    
   }, []);
 
   const atualizarHTML = () => {
@@ -111,7 +116,7 @@ export default function Cards(props) {
   const deletarCard = async (tag_raiz, id) => {
     setLoadingData(true);
     try {
-      await axios.delete(`https://websage-api.abelcode.dev/api/delete-item/${id}`, config);
+      // await axios.delete(`https://websage-api.abelcode.dev/api/delete-item/${id}`, config);
       removerElemento(tag_raiz, id);
     } catch (error) {
       alert("Item não foi apagado");
@@ -137,15 +142,15 @@ export default function Cards(props) {
     if (!elementoExistente) {
       const novoObjeto = {
         tag_raiz: novoElemento.tag_raiz,
-        ramos: [novoElemento],
+        cards: [novoElemento],
       };
       setTagsGerais((prevTags) => [novoObjeto, ...prevTags]);
     } else {
-      // Se houver, adicionar ao array de ramos do elemento existente
-      const novoRamos = [novoElemento, ...elementoExistente.ramos];
+      // Se houver, adicionar ao array de cards do elemento existente
+      const novoRamos = [novoElemento, ...elementoExistente.cards];
       const novosTagsGerais = tagsGerais.map((item) => {
         if (item.tag_raiz === novoElemento.tag_raiz) {
-          return { ...item, ramos: novoRamos };
+          return { ...item, cards: novoRamos };
         }
         return item;
       });
@@ -159,8 +164,8 @@ export default function Cards(props) {
     setTagsGerais((prevTags) => {
       return prevTags.map((item) => {
         if (item.tag_raiz === tagRaiz) {
-          const novosRamos = item.ramos.filter((ramo) => ramo._id !== id);
-          return { ...item, ramos: novosRamos };
+          const novosRamos = item.cards.filter((card) => card._id !== id);
+          return { ...item, cards: novosRamos };
         }
         return item;
       });
@@ -181,7 +186,7 @@ export default function Cards(props) {
       <div className={styles.container}>
         <section>
           {tagsGerais.map((tags) =>
-            tags?.ramos.map((card) => (
+            tags?.cards.map((card) => (
               <Card tags={tags}
                     card={card}
                     deletarCard={deletarCard}
