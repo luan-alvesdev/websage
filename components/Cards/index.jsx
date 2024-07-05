@@ -20,7 +20,8 @@ export default function Cards(props) {
 
     // Adicionar listener para atualizações no armazenamento local
     try {
-      chrome.storage.onChanged.addListener((changes, namespace) => {
+      chrome.storage.onChanged.addListener((changes) => {
+        console.log(changes.activeTabUrl)
         if (changes.extractedHTML || changes.activeTabUrl) {
           atualizarHTML();
         }
@@ -102,7 +103,7 @@ export default function Cards(props) {
       })
       .catch((error) => {
         if (error.response && error.response.status === 409) {
-          alert(error.response.data);
+          alert(error.response.data, data.activeTabUrl);
         } else {
           alert("Erro ao extrair dados da página: ", error);
           console.log(error.response.data.message);
@@ -116,7 +117,7 @@ export default function Cards(props) {
   const deletarCard = async (tag_raiz, id) => {
     setLoadingData(true);
     try {
-      // await axios.delete(`https://websage-api.abelcode.dev/api/delete-item/${id}`, config);
+      await axios.delete(`https://websage-api.abelcode.dev/api/delete-item/${id}`, config);
       removerElemento(tag_raiz, id);
     } catch (error) {
       alert("Item não foi apagado");
@@ -124,11 +125,8 @@ export default function Cards(props) {
     setLoadingData(false);
   };
 
-  const atualizaCard = async (ramo_id, imageUrl) => {
-    await axios.put(`https://websage-api.abelcode.dev/api/atualizar-item`, { imageUrl, ramo_id }, config)
-      .then(async (novoCard) => {
-        await buscarImagem(novoCard.tag1, novoCard.tag2, novoCard.tag3);
-      });
+  const atualizaCard = async (card_id, imageUrl) => {
+    await axios.put(`https://websage-api.abelcode.dev/api/update-item`, { imageUrl, card_id }, config)
   };
 
   // ** ------------------------------------ Operações em Array --------------------------------------
