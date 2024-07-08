@@ -74,7 +74,7 @@ export default function Card(props) {
                                     size="small"
                                     color="error"
                                     onClick={
-                                        () => props.deletarCard(props.tags.tag_raiz, props.card._id)
+                                        () => props.deletarCard(props.card._id)
                                     }
                                 >
                                     <Tooltip title="Apagar card">
