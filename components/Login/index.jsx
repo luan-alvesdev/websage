@@ -35,7 +35,7 @@ export default function Login(props) {
 
     const fazerLogin = async (recebeSchema) => {
         axios
-            .post(`https://websage-api.abelcode.dev/api/user/login`, recebeSchema)
+            .post(`https://cardsage-api.abelcode.dev/api/user/login`, recebeSchema)
             .then(async (response) => {
                 const novoCardData = response.data;
                 const token = novoCardData.access_token
@@ -80,7 +80,7 @@ export default function Login(props) {
                 component="form"
                 onSubmit={submeterFormulario}
             >
-                <h1 className={styles.titulo}>WebSage</h1>
+                <h1 className={styles.titulo}>CardSage</h1>
                 <TextField
                     className={styles.campoTexto}
                     value={formData.email}

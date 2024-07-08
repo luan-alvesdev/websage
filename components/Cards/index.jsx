@@ -6,7 +6,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import styles from "./Cards.module.css";
 
 export default function Cards(props) {
-  const [tagsGerais, setTagsGerais] = useState([]);
+  const [userData, setUserData] = useState({});
   const [loadingData, setLoadingData] = useState(false);
   const config = {
     headers: {
@@ -21,7 +21,6 @@ export default function Cards(props) {
     // Adicionar listener para atualizações no armazenamento local
     try {
       chrome.storage.onChanged.addListener((changes) => {
-        console.log(changes.activeTabUrl)
         if (changes.extractedHTML || changes.activeTabUrl) {
           atualizarHTML();
         }
@@ -67,14 +66,14 @@ export default function Cards(props) {
     // Carrega o Cache no navegador
     const cache = getCachedData();
     if (cache) {
-      setTagsGerais(cache);
+      setUserData(cache);
     }
 
     // Inicia busca por atualizações
     try {
-      axios.get("https://websage-api.abelcode.dev/api/list-items", config)
+      axios.get("https://cardsage-api.abelcode.dev/api/list-items", config)
         .then((response) => {
-          setTagsGerais(response.data);
+          setUserData(response.data);
           // Armazenar ou atualiza os dados no localStorage
           localStorage.setItem("cards", JSON.stringify({ data: response.data }));
         });
@@ -86,7 +85,7 @@ export default function Cards(props) {
   const adicionarCard = (data, statusBotao) => {
     statusBotao(true);
 
-    axios.post(`https://websage-api.abelcode.dev/api/save-item`, data, config)
+    axios.post(`https://cardsage-api.abelcode.dev/api/save-item`, data, config)
       .then(async (novoCard) => {
         const novoCardData = novoCard.data;
         try {
@@ -114,11 +113,11 @@ export default function Cards(props) {
       });
   };
 
-  const deletarCard = async (tag_raiz, id) => {
+  const deletarCard = async (id) => {
     setLoadingData(true);
     try {
-      await axios.delete(`https://websage-api.abelcode.dev/api/delete-item/${id}`, config);
-      removerElemento(tag_raiz, id);
+      await axios.delete(`https://cardsage-api.abelcode.dev/api/delete-item/${id}`, config);
+      removerElemento(id);
     } catch (error) {
       alert("Item não foi apagado");
     }
@@ -126,50 +125,29 @@ export default function Cards(props) {
   };
 
   const atualizaCard = async (card_id, imageUrl) => {
-    await axios.put(`https://websage-api.abelcode.dev/api/update-item`, { imageUrl, card_id }, config)
+    await axios.put(`https://cardsage-api.abelcode.dev/api/update-item`, { imageUrl, card_id }, config)
   };
 
   // ** ------------------------------------ Operações em Array --------------------------------------
-  const adicionarNovoElemento = (novoElemento, imageUrl) => {
-    novoElemento.imageUrl = imageUrl;
+  const adicionarNovoElemento = (novoCard, imageUrl) => {
+    // Cria uma cópia do objeto novoCard para não modificar o original
+  const novoCardCopy = { ...novoCard, imageUrl };
 
-    // Verificar se há um elemento com a mesma tag_raiz
-    const elementoExistente = tagsGerais.find((item) => item.tag_raiz === novoElemento.tag_raiz);
-
-    // Se não houver, criar um novo elemento
-    if (!elementoExistente) {
-      const novoObjeto = {
-        tag_raiz: novoElemento.tag_raiz,
-        cards: [novoElemento],
-      };
-      setTagsGerais((prevTags) => [novoObjeto, ...prevTags]);
-    } else {
-      // Se houver, adicionar ao array de cards do elemento existente
-      const novoRamos = [novoElemento, ...elementoExistente.cards];
-      const novosTagsGerais = tagsGerais.map((item) => {
-        if (item.tag_raiz === novoElemento.tag_raiz) {
-          return { ...item, cards: novoRamos };
-        }
-        return item;
-      });
-      setTagsGerais(novosTagsGerais);
-    }
-    // Atualiza os dados no localStorage
-    localStorage.setItem("cards", JSON.stringify({ data: tagsGerais }));
+  // Atualiza o estado
+  setUserData(prevCardList => {
+    const updatedCards = [novoCardCopy, ...prevCardList.cards];
+    const updatedState = { ...prevCardList, cards: updatedCards };  
+    // Atualiza o localStorage
+    localStorage.setItem("cards", JSON.stringify({ data: updatedState }));
+    return updatedState;
+  });
   };
 
-  const removerElemento = (tagRaiz, id) => {
-    setTagsGerais((prevTags) => {
-      return prevTags.map((item) => {
-        if (item.tag_raiz === tagRaiz) {
-          const novosRamos = item.cards.filter((card) => card._id !== id);
-          return { ...item, cards: novosRamos };
-        }
-        return item;
-      });
-    });
+  const removerElemento = (id) => {
+    const card = userData.cards.filter((card) => card._id !== id);
+    setUserData({ ...userData, cards: card });
     // Atualiza os dados no localStorage
-    localStorage.setItem("cards", JSON.stringify({ data: tagsGerais }));
+    localStorage.setItem("cards", JSON.stringify({ data: userData }));
   };
 
   // Função para obter dados, seja do cache ou da API
@@ -183,14 +161,12 @@ export default function Cards(props) {
     <>
       <div className={styles.container}>
         <section>
-          {tagsGerais.map((tags) =>
-            tags?.cards.map((card) => (
-              <Card tags={tags}
-                    card={card}
+          {userData?.cards?.map((card) => (
+              <Card card={card}
                     deletarCard={deletarCard}
               />
             ))
-          )}
+          }
         </section>
       </div>
 

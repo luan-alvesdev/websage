@@ -1,12 +1,12 @@
-# WebSage
+# CardSage
 
 ## Capturas de Tela
 
 ### Telas de Login & lista de cartões. 
 
 <div style="display: flex; justify-content: space-between;">
-  <img src="https://raw.githubusercontent.com/luan-alvesdev/websage/main/assets/Captura_de_Tela_2024-06-26_as_16.27.47.png" alt="Tela login" width="45%">
-  <img src="https://raw.githubusercontent.com/luan-alvesdev/websage/main/assets/Captura_de_Tela_2024-06-26_as_16.23.14.png" alt="Tela lista de cards" width="45%">
+  <img src="https://raw.githubusercontent.com/luan-alvesdev/cardsage/main/assets/Captura_de_Tela_2024-06-26_as_16.27.47.png" alt="Tela login" width="45%">
+  <img src="https://raw.githubusercontent.com/luan-alvesdev/cardsage/main/assets/Captura_de_Tela_2024-06-26_as_16.23.14.png" alt="Tela lista de cards" width="45%">
 </div>
 
 ## Descrição
@@ -15,7 +15,7 @@ Web Sage é uma extensão do Chrome que permite adicionar páginas da web a uma 
 
 Ao adicionar uma página, um cartão é criado com um resumo da página, um título e tags relacionadas ao conteúdo principal. Isso permite que os usuários organizem e acessem suas páginas favoritas de maneira mais eficiente, clicando no link do cartão para abrir a página correspondente. A versão atual da extensão funciona somente em português. 
 
-## Executando o WebSage localmente
+## Executando o CardSage localmente
 
 ### Rodando em modo desenvolvedor:
 Certifique-se de ter o node.js instalado na versão 20 ou superiores. 
@@ -69,7 +69,7 @@ Após isso, uma pasta chamada "out" será gerada na raiz do projeto, contendo to
 
 Pronto! A extensão foi adicionada ao seu navegador e está pronta para uso.
 
-[Clique aqui para ler os termos de privacidade](https://luan-alvesdev.github.io/websage/).
+[Clique aqui para ler os termos de privacidade](https://luan-alvesdev.github.io/cardsage/).
 
 ## Authors
 
