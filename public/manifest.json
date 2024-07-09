@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "CardSage",
   "short_name": "WS",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Uma extensão para google chrome que gerencia, cataloga e salva seus favoritos de forma prática e detalhada.",
   "permissions": [
     "storage",
