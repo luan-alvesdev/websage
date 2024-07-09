@@ -9,8 +9,10 @@ export default function Cards(props) {
   const [userData, setUserData] = useState({});
   const [loadingData, setLoadingData] = useState(false);
   const config = {
+    maxBodyLength: Infinity,
     headers: {
-      Authorization: 'Bearer ' + localStorage.getItem('tokenAutenticacao')
+      'Content-Type': 'application/json', 
+      'Authorization': 'Bearer ' + localStorage.getItem('tokenAutenticacao')
     },
   };
 
@@ -85,7 +87,7 @@ export default function Cards(props) {
   const adicionarCard = (data, statusBotao) => {
     statusBotao(true);
 
-    axios.post(`https://cardsage-api.abelcode.dev/api/save-item`, data, config)
+    axios.post(`https://cardsage-api.abelcode.dev/api/save-item`, JSON.stringify(data), config)
       .then(async (novoCard) => {
         const novoCardData = novoCard.data;
         try {
@@ -125,7 +127,7 @@ export default function Cards(props) {
   };
 
   const atualizaCard = async (card_id, imageUrl) => {
-    await axios.put(`https://cardsage-api.abelcode.dev/api/update-item`, { imageUrl, card_id }, config)
+    await axios.put(`https://cardsage-api.abelcode.dev/api/update-item`, JSON.stringify({ imageUrl, card_id }), config)
   };
 
   // ** ------------------------------------ Operações em Array --------------------------------------
