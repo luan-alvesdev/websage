@@ -26,11 +26,11 @@ export default function App() {
 
   return (
     <>
-      { exibirLogin && !exibirCadastro && <Login setExibirLogin={setExibirLogin} setExibirCadastro={setExibirCadastro}/> }
-      { !exibirLogin && <Cadastro setExibirCadastro={setExibirCadastro} setExibirLogin={setExibirLogin}/>} 
-      { !exibirLogin && <Header setExibirLogin={setExibirLogin} />} 
-      {/* { !exibirLogin && <Cards enviaFuncaoInicial={abrirComunicacao} setExibirLogin={setExibirLogin}/>}  */}
-      {/* { !exibirLogin && <Footer salvarCard={adicionarCard} data={data}/>}  */}
+      {exibirLogin && !exibirCadastro && <Login setExibirLogin={setExibirLogin} setExibirCadastro={setExibirCadastro} />}
+      {!exibirLogin && exibirCadastro && <Cadastro setExibirCadastro={setExibirCadastro} setExibirLogin={setExibirLogin} />}
+      {!exibirLogin && !exibirCadastro && <Header setExibirLogin={setExibirLogin} />}
+      {!exibirLogin && !exibirCadastro && <Cards enviaFuncaoInicial={abrirComunicacao} setExibirLogin={setExibirLogin} />}
+      {!exibirLogin && !exibirCadastro && <Footer salvarCard={adicionarCard} data={data} />}
     </>
   );
 }
