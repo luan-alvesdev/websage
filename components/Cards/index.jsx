@@ -75,7 +75,7 @@ export default function Cards(props) {
     try {
       axios.get("https://cardsage-api.abelcode.dev/api/list-items", config)
         .then((response) => {
-          setUserData(response.data);
+          setUserData(response.data[0]);
           // Armazenar ou atualiza os dados no localStorage
           localStorage.setItem("cards", JSON.stringify({ data: response.data }));
         });

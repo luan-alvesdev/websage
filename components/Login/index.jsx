@@ -7,6 +7,7 @@ import { useState } from 'react';
 import axios from "axios";
 import { Alert, Snackbar } from "@mui/material";
 
+
 export default function Login(props) {
 
     const yupSchema = useValidation()
@@ -33,7 +34,7 @@ export default function Login(props) {
         })
     }
 
-    const fazerLogin = async (recebeSchema) => {
+    const fazerLogin = async (recebeSchema) => {    
         axios
             .post(`https://cardsage-api.abelcode.dev/api/user/login`, recebeSchema)
             .then(async (response) => {
@@ -52,7 +53,7 @@ export default function Login(props) {
     const submeterFormulario = async (event) => {
         event.preventDefault();
 
-        setSucesso(''); //
+        setSucesso(''); 
         setErros({
             email: '',
             password: ''
@@ -114,6 +115,9 @@ export default function Login(props) {
                 >
                     Login
                 </Button>
+                <span>
+                    Ainda não tem cadastro? <a href="#" onClick={() => { props.setExibirLogin(false); props.setExibirCadastro(true); }}>Clique aqui.</a>
+                </span>
             </Box>
             <Snackbar open={open} autoHideDuration={6000} 
             // onClose={handleClose}
