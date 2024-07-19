@@ -137,7 +137,7 @@ export default function Cards(props) {
 
   // Atualiza o estado
   setUserData(prevCardList => {
-    const updatedCards = [novoCardCopy, ...prevCardList.cards];
+    const updatedCards = [novoCardCopy, ...(prevCardList.cards || [])];
     const updatedState = { ...prevCardList, cards: updatedCards };  
     // Atualiza o localStorage
     localStorage.setItem("cards", JSON.stringify({ data: updatedState }));
